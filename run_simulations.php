@@ -10,8 +10,6 @@ use Simulation\Board;
 use Simulation\Robot;
 use Simulation\MoveProcessor;
 
-use Simulation\Exceptions\InputException;
-
 // board is always the same and does not change state, so we only need 1 instance
 $board = new Board(5, 5);
 
