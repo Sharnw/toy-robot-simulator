@@ -2,7 +2,7 @@
 
 namespace Simulation;
 
-use Exceptions\InputException;
+use Simulation\Exceptions\InputException;
 
 /*
 * All the Board class needs to do is store it's dimensions

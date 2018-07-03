@@ -9,6 +9,7 @@ require_once('Simulation/MoveProcessor.php');
 use Simulation\Board;
 use Simulation\Robot;
 use Simulation\MoveProcessor;
+use Exceptions\InputException;
 
 // board is always the same and does not change state, so we only need 1 instance
 $board = new Board(5, 5);
@@ -28,7 +29,15 @@ foreach($files as $file) {
 		$mover = new MoveProcessor($board, $robot);
 		foreach ($lines as $text) {
 			if (trim($text) == '') continue;
-			$mover->processCommand($text);
+			try {
+				$mover->processCommand($text);
+			} catch(InputException $e) {
+				// we can kill on invalid input
+				die("invalid input: {$e->getMessage()}\r\n");
+			} catch (Exception $e) {
+				// we have to just ignore on invalid move
+				echo "move ignored: {$e->getMessage()}\r\n";
+			}
 		}
 		echo "\r\n";
 	}	

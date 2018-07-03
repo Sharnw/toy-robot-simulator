@@ -2,7 +2,7 @@
 
 namespace Simulation;
 
-use Exceptions\InputException;
+use Simulation\Exceptions\InputException;
 
 /*
 * Processes move text from input files and actions them on a robot.
@@ -38,7 +38,7 @@ class MoveProcessor {
 				throw new InputException("Invalid 'PLACE' parameters specified.");
 			}
 			else {
-				$this->robot->placeOnBoard($this->board, (int) $placeParams[0], (int) $placeParams[1], (float) $placeParams[2]);
+				$this->robot->placeOnBoard($this->board, (int) $placeParams[0], (int) $placeParams[1], $this->getDirectionDegrees($placeParams[2]));
 			}
 		}
 		else {
@@ -58,6 +58,20 @@ class MoveProcessor {
 				break;
 			}
 		}
+	}
+
+	private function getDirectionDegrees($direction) {
+		switch ($direction) {
+			case 'NORTH':
+				return 0;
+			case 'EAST':
+				return 90;
+			case 'SOUTH':
+				return 180;
+			case 'WEST':
+				return 270;	
+		}
+		throw new InputException("Invalid 'PLACE' direction specified.");
 	}
 
 }

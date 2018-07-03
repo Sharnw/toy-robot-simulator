@@ -21,9 +21,9 @@ class Robot {
 	* @param $board Board The board to place this robot on.
 	* @param $x 	Int    The x position to place robot.
 	* @param $y 	Int    The y position to place robot.
-	* @param $f 	Float  The f/rotation angle the robot should face.
+	* @param $f 	Int    The f/rotation angle the robot should face.
 	*/
-	public function placeOnBoard(Board $board, Int $x, Int $y, Float $f) {
+	public function placeOnBoard(Board $board, Int $x, Int $y, Int $f) {
 		$this->validateRotation($f);
 
 		if (!$board->isMoveValid($x, $y)) {
@@ -45,6 +45,8 @@ class Robot {
 	* Rotates robots f angle 90 degrees to the right
 	*/
 	public function faceLeft() {
+		$this->validateBoard();
+
 		// no need to validate rotation again as there is no input
 		if ($this->f >= 90) $this->f -= 90;
 		else $this->f = 270;
@@ -56,6 +58,8 @@ class Robot {
 	* Rotates robots f angle 90 degrees to the left
 	*/
 	public function faceRight() {
+		$this->validateBoard();
+
 		// no need to validate rotation again as there is no input
 		if ($this->f == 270) $this->f = 0;
 		else $this->f += 90;
@@ -66,6 +70,8 @@ class Robot {
 	* Moves the robot forwards one square if move is valid
 	*/
 	public function moveForward() {
+		$this->validateBoard();
+
 		$newX = $this->x;
 		$newY = $this->y;
 		switch ($this->f) {
@@ -108,10 +114,17 @@ class Robot {
 	/*
 	* Validates a new f/rotation value to ensure it is divisable by 90
 	*
-	* @param $rotation Float The rotation angle to validate.
+	* @param $rotation Int The rotation angle to validate.
 	*/
-	private function validateRotation(Float $rotation) {
+	private function validateRotation(Int $rotation) {
 		if ($rotation % 90 != 0) throw new InputException('Robot angle (f) must be divisable by 90 degrees');
+	}
+
+	/*
+	* Validates whether the robot has been placed on a valid board.
+	*/
+	private function validateBoard() {
+		if (!$this->board) throw new MoveException('Cannot move before being placed on a board');
 	}
 
 	// DYNAMIC ATTRIBUTES
